@@ -11,8 +11,8 @@ steps:
       - JuliaCI/julia#v1:
           version: 1.6
       - staticfloat/sandbox#v1:
-          rootfs_url: https://github.com/JuliaCI/rootfs-images/releases/download/$ROOTFS_TAG_PACK/package_linux.${ROOTFS_ARCH}.tar.gz
-          rootfs_treehash: "$ROOTFS_TREE_PACK"
+          rootfs_url: https://github.com/JuliaCI/rootfs-images/releases/download/$ROOTFS_PACK_TAG/package_linux.${ROOTFS_ARCH}.tar.gz
+          rootfs_treehash: "$ROOTFS_PACK_TREE"
           uid: 1000
           gid: 1000
           workspaces:
@@ -54,8 +54,8 @@ steps:
       - JuliaCI/julia#v1:
           version: 1.6
       - staticfloat/sandbox#v1:
-          rootfs_url: https://github.com/JuliaCI/rootfs-images/releases/download/$ROOTFS_TAG_TEST/tester_linux.${ROOTFS_ARCH}.tar.gz
-          rootfs_treehash: "$ROOTFS_TREE_TEST"
+          rootfs_url: https://github.com/JuliaCI/rootfs-images/releases/download/$ROOTFS_TEST_TREE/package_linux.${ROOTFS_ARCH}.tar.gz
+          rootfs_treehash: "$ROOTFS_TEST_TREE"
           uid: 1000
           gid: 1000
           workspaces:
@@ -88,7 +88,7 @@ steps:
 
       echo "--- Run the Julia test suite"
       unset JULIA_DEPOT_PATH
-      $$JULIA_DIRECTORY_NAME/bin/julia -e 'Base.runtests(["all"]; ncores = Sys.CPU_THREADS)'
+      $$JULIA_DIRECTORY_NAME/bin/julia .buildkite/utilities/rr/rr_capture.jl $$JULIA_DIRECTORY_NAME/bin/julia -e 'Base.runtests(["all"]; ncores = Sys.CPU_THREADS)'
     timeout_in_minutes: 120
     notify:
       - github_commit_status:
@@ -101,8 +101,8 @@ steps:
       - JuliaCI/julia#v1:
           version: 1.6
       - staticfloat/sandbox#v1:
-          rootfs_url: https://github.com/JuliaCI/rootfs-images/releases/download/$ROOTFS_TAG_PACK/package_linux.${ROOTFS_ARCH}.tar.gz
-          rootfs_treehash: "$ROOTFS_TREE_PACK"
+          rootfs_url: https://github.com/JuliaCI/rootfs-images/releases/download/$ROOTFS_PACK_TAG/package_linux.${ROOTFS_ARCH}.tar.gz
+          rootfs_treehash: "$ROOTFS_PACK_TREE"
           uid: 1000
           gid: 1000
           workspaces:
@@ -135,7 +135,7 @@ steps:
 
       echo "--- Run the Julia test suite"
       unset JULIA_DEPOT_PATH
-      $$JULIA_DIRECTORY_NAME/bin/julia -e 'Base.runtests(["all"]; ncores = Sys.CPU_THREADS)'
+      $$JULIA_DIRECTORY_NAME/bin/julia .buildkite/utilities/rr/rr_capture.jl $$JULIA_DIRECTORY_NAME/bin/julia -e 'Base.runtests(["all"]; ncores = Sys.CPU_THREADS)'
     timeout_in_minutes: 120
     notify:
       - github_commit_status:

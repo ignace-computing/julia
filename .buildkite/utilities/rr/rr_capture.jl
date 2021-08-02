@@ -5,18 +5,25 @@ using Tar
 if Base.VERSION < v"1.6"
     throw(ErrorException("The `rr_capture.jl` script requires Julia 1.6 or greater"))
 end
-
-if length(ARGS) < 2
-    throw(ErrorException("Usage: rr_capture.jl <timeout_in_minutes> <command...>"))
+if length(ARGS) < 1
+    throw(ErrorException("Usage: rr_capture.jl [command...]"))
 end
 
-const TIMEOUT_IN_MINUTES = parse(Int, popfirst!(ARGS))::Int
+# We only use `rr` on certain builders
+const rr_builder_list = ["tester_linux64", "tester2_linux64"]
+const this_builder = ENV["BUILDKITE_STEP_KEY"]
+if !(this_builder in rr_builder_list)
+    @info "We will not run the tests under rr" this_builder rr_builder_list
+    p = run(`$ARGS`)
+    exit(p.exitcode)
+end
 
-const run_id      = ENV["BUILDKITE_BUILD_NUMBER"]::String
-const shortcommit = ENV["BUILDKITE_COMMIT"][1:10]::String
+@info "We will run the tests under rr"
 
+const TIMEOUT = 2 * 60 * 60 # timeout in seconds
+const run_id = ENV["BUILDKITE_JOB_ID"]
+const shortcommit = ENV["BUILDKITE_COMMIT"]
 const num_cores = min(Sys.CPU_THREADS, 8, parse(Int, get(ENV, "JULIA_TEST_NUM_CORES", "8")) + 1)
-@info "" num_cores
 
 proc = nothing
 
@@ -51,7 +58,7 @@ mktempdir() do dir
 
         # Start asynchronous timer that will kill `rr`
         @async begin
-            sleep(60 * TIMEOUT_IN_MINUTES)
+            sleep(TIMEOUT)
 
             # If we've exceeded the timeout and `rr` is still running, kill it.
             if isopen(proc)
