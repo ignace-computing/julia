@@ -4,7 +4,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 PLATFORM="$1"
 
-cat "$SCRIPT_DIR/$PLATFORM.arches" | sed 1,1d | tr -s ' ' | while read line; do
+cat "$SCRIPT_DIR/$PLATFORM.arches" | tr -s ' ' | while read line; do
   if [[ $line == \#* ]]; then
     continue
   fi
