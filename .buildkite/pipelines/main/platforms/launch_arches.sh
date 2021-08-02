@@ -8,12 +8,12 @@ cat "$SCRIPT_DIR/$PLATFORM.arches" | sed 1,1d | tr -s ' ' | while read line; do
   if [[ $line == \#* ]]; then
     continue
   fi
-  ARCH=`echo $line | cut -d ' ' -f 1`
-  ROOTFS_ARCH=`echo $line | cut -d ' ' -f 2`
-  ROOTFS_PACK_TAG=`echo $line | cut -d ' ' -f 3`
-  ROOTFS_PACK_TREE=`echo $line | cut -d ' ' -f 4`
-  ROOTFS_TEST_TAG=`echo $line | cut -d ' ' -f 5`
-  ROOTFS_TEST_TREE=`echo $line | cut -d ' ' -f 6`
+  export ARCH=`echo $line | cut -d ' ' -f 1`
+  export ROOTFS_ARCH=`echo $line | cut -d ' ' -f 2`
+  export ROOTFS_PACK_TAG=`echo $line | cut -d ' ' -f 3`
+  export ROOTFS_PACK_TREE=`echo $line | cut -d ' ' -f 4`
+  export ROOTFS_TEST_TAG=`echo $line | cut -d ' ' -f 5`
+  export ROOTFS_TEST_TREE=`echo $line | cut -d ' ' -f 6`
   echo "Launching: PLATFORM=$PLATFORM ARCH=$ARCH ROOTFS_ARCH=$ROOTFS_ARCH"
   buildkite-agent pipeline upload "$SCRIPT_DIR/$PLATFORM.yml"
 done
