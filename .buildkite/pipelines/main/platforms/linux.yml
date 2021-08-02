@@ -50,6 +50,7 @@ steps:
   - label: "tester_linux$ARCH"
     key: tester_linux$ARCH
     depends_on: package_linux$ARCH
+    if: false # TODO: delete this line
     plugins:
       - JuliaCI/julia#v1:
           version: 1.6
