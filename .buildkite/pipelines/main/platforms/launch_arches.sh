@@ -15,5 +15,5 @@ cat "$SCRIPT_DIR/$PLATFORM.arches" | sed 1,1d | tr -s ' ' | while read line; do
   ROOTFS_TEST_TAG=`echo $line | cut -d ' ' -f 5`
   ROOTFS_TEST_TREE=`echo $line | cut -d ' ' -f 6`
   echo "Launching: PLATFORM=$PLATFORM ARCH=$ARCH ROOTFS_ARCH=$ROOTFS_ARCH"
-  # buildkite-agent pipeline upload "$SCRIPT_DIR/$PLATFORM.yml"
+  buildkite-agent pipeline upload "$SCRIPT_DIR/$PLATFORM.yml"
 done
