@@ -150,6 +150,7 @@ end
 showerror(io::IO, ex::KeyError) = (print(io, "KeyError: key ");
                                    show(io, ex.key);
                                    print(io, " not found"))
+showerror(io::IO, ex::KeyTypeError) = print(io, "$(limitrepr(ex.key)) is not a valid key for type $(ex.expected_key_tpye)")
 showerror(io::IO, ex::InterruptException) = print(io, "InterruptException:")
 showerror(io::IO, ex::ArgumentError) = print(io, "ArgumentError: ", ex.msg)
 showerror(io::IO, ex::AssertionError) = print(io, "AssertionError: ", ex.msg)

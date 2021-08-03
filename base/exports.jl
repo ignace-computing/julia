@@ -127,6 +127,7 @@ export
     EOFError,
     InvalidStateException,
     KeyError,
+    KeyTypeError,
     MissingException,
     ProcessFailedException,
     TaskFailedException,

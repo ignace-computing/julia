@@ -12,6 +12,18 @@ struct KeyError <: Exception
     key
 end
 
+"""
+    KeyTypeError(key)
+
+An update operation on an `AbstractDict` (`Dict`) or `Set` like object tried to
+use an incompatible key type.
+"""
+struct KeyTypeError <: Exception
+    expected_key_tpye
+    key
+end
+
+
 const secret_table_token = :__c782dbf1cf4d6a2e5e3865d7e95634f2e09b5902__
 
 haskey(d::AbstractDict, k) = in(k, keys(d))
